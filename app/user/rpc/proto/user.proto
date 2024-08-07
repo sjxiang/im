@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./pb";
+
+// entity
+message User {
+    int64 id = 1;         // 用户id
+    string mobile = 2;    // 手机号码
+    string nickname = 3;  // 用户昵称
+    string avatar = 4;    // 用户头像
+    string intro = 5;     // 简介
+    int64  sex = 6;       // 用户性别
+    int64 status = 7;     // 是否锁住
+}
+
+
+// dto
+message Request {
+    string ping = 1;
+}
+
+message Response {
+    string pong = 1;
+}
+
+message RegisterReq {
+    string mobile = 1;
+    string nickname = 2;
+    string password = 3;
+    string avatar = 4;
+    int64 sex = 5;
+}
+message RegisterResp {
+    string accessToken = 1;
+    int64  accessExpire = 2;
+}
+
+message LoginReq {
+    string mobile = 1;
+    string password = 2;
+}
+message LoginResp {
+    string token = 1;
+    int64 expire = 2;
+}
+
+message GetUserInfoReq {
+    string id = 1;
+}
+message GetUserInfoResp {
+    User user = 1;
+}
+
+message FindUserReq {
+    string nickname = 1;
+    string mobile = 2;
+    repeated string ids = 3;
+}
+message FindUserResp {
+    User user = 1;
+}
+
+
+service UserSrv {
+    rpc Ping (Request) returns (Response);
+    rpc Login(LoginReq) returns (LoginResp);
+    rpc Register(RegisterReq) returns (RegisterResp);
+    rpc GetUserInfo(GetUserInfoReq) returns (GetUserInfoResp);
+    rpc FindUser(FindUserReq) returns (FindUserResp);
+}
+
+
+// goctl rpc protoc *.proto --go_out=../ --go-grpc_out=../ --zrpc_out=../ --style=go_zero

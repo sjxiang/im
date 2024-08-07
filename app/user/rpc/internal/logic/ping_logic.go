@@ -24,9 +24,8 @@ func NewPingLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PingLogic {
 }
 
 func (l *PingLogic) Ping(in *pb.Request) (*pb.Response, error) {
-	// todo: add your logic here and delete this line
-
+	
 	return &pb.Response{
-		Pong: "把星炬的光芒当成与生俱来的自然现象，是非常危险的。",
+		Pong: "健康检查",
 	}, nil
 }

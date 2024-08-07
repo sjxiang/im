@@ -33,8 +33,7 @@ message RegisterReq {
     int64 sex = 5;
 }
 message RegisterResp {
-    string accessToken = 1;
-    int64  accessExpire = 2;
+    int64 id = 1;
 }
 
 message LoginReq {
@@ -42,8 +41,8 @@ message LoginReq {
     string password = 2;
 }
 message LoginResp {
-    string token = 1;
-    int64 expire = 2;
+    string accessToken = 1;
+    int64 accessExpire = 2;
 }
 
 message GetUserInfoReq {

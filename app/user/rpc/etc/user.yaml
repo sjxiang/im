@@ -1,7 +1,24 @@
 Name: user.rpc
+Mode: dev
 ListenOn: 0.0.0.0:8080
+
 
 Etcd:
   Hosts:
   - 127.0.0.1:12379
   Key: user.rpc
+
+Mysql:
+  DataSource: root:my-secret-pw@tcp(127.0.0.1:13306)/im?parseTime=true
+
+CacheRedis:
+  - Host: 127.0.0.1:16379
+  Pass:
+  Type: node
+
+
+Jwt:
+  SecretKey: 8xEMrWkBARcDDYQ 
+  Duration: 8640000
+  # 60 * 60 * 24 * 100
+

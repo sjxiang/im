@@ -9,7 +9,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-
+// md5
 func Md5(str string) string {
 	h := md5.New()
 	h.Write([]byte(str))

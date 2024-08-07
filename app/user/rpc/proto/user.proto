@@ -46,7 +46,7 @@ message LoginResp {
 }
 
 message GetUserInfoReq {
-    string id = 1;
+    int64 id = 1;
 }
 message GetUserInfoResp {
     User user = 1;
@@ -58,16 +58,16 @@ message FindUserReq {
     repeated string ids = 3;
 }
 message FindUserResp {
-    User user = 1;
+    repeated User user = 1;
 }
 
 
 service UserSrv {
     rpc Ping (Request) returns (Response);
-    rpc Login(LoginReq) returns (LoginResp);
-    rpc Register(RegisterReq) returns (RegisterResp);
-    rpc GetUserInfo(GetUserInfoReq) returns (GetUserInfoResp);
-    rpc FindUser(FindUserReq) returns (FindUserResp);
+    rpc Login (LoginReq) returns (LoginResp);
+    rpc Register (RegisterReq) returns (RegisterResp);
+    rpc GetUserInfo (GetUserInfoReq) returns (GetUserInfoResp);
+    rpc FindUser (FindUserReq) returns (FindUserResp);
 }
 
 

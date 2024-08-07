@@ -14,7 +14,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrMobileAlreadyExists = errors.New("mobile already exist")
+var ErrMobileAlreadyExists = errors.New("mobile already exist")  // 改手机号码已经注册
 
 type RegisterLogic struct {
 	ctx    context.Context

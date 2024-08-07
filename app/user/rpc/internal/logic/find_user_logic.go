@@ -3,9 +3,11 @@ package logic
 import (
 	"context"
 
+	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
 
+	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -24,7 +26,32 @@ func NewFindUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindUser
 }
 
 func (l *FindUserLogic) FindUser(in *pb.FindUserReq) (*pb.FindUserResp, error) {
-	// todo: add your logic here and delete this line
+	// 用户搜索，叠加
 
-	return &pb.FindUserResp{}, nil
+	var userList []*model.Users
+	var err error
+
+	switch {
+	case in.Mobile != "":
+		user, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
+		if err == nil {
+			userList = append(userList, user)
+		}
+	case in.Nickname != "":
+		userList, err = l.svcCtx.UserModel.ListByNickname(l.ctx, in.Nickname)
+	case len(in.Ids) > 0:
+		userList, err = l.svcCtx.UserModel.ListByIds(l.ctx, in.Ids)
+	}
+
+	if err != nil {
+		return nil, err 
+	}
+
+
+	var resp []*pb.User
+	copier.Copy(&resp, &userList)
+
+	return &pb.FindUserResp{
+		User: resp,
+	}, nil
 }

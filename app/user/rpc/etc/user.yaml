@@ -11,10 +11,9 @@ Etcd:
 Mysql:
   DataSource: root:my-secret-pw@tcp(127.0.0.1:13306)/im?parseTime=true
 
-CacheRedis:
-  - Host: 127.0.0.1:16379
-  Pass:
-  Type: node
+Cache:
+  - Host: 127.0.0.1:6379
+  
 
 
 Jwt:

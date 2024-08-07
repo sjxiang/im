@@ -12,8 +12,8 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrMobileNotFound   = errors.New("mobile not found")
-var ErrPasswordNotMatch = errors.New("password not match")
+var ErrMobileNotFound   = errors.New("mobile not found")    // 该手机号码未注册
+var ErrPasswordNotMatch = errors.New("password not match")  // 输入密码不匹配 
 
 type LoginLogic struct {
 	ctx    context.Context

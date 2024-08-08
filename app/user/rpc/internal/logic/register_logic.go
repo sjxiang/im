@@ -3,14 +3,14 @@ package logic
 import (
 	"context"
 	"database/sql"
-	"errors"
 	
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
 	"im/pkg/util"
 	"im/pkg/xerr"
-
+	
+	"github.com/pkg/errors"
 	"github.com/google/uuid"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -39,10 +39,10 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	// 验证用户是否注册，根据手机号码验证
 	record, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile) 
 	switch {
-	case err != nil && !errors.Is(err, model.ErrNotFound):
-		return nil, err 
+	case err != nil && err != model.ErrNotFound:
+		return nil, errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile, err #{err}, param #{in.Mobile}")
 	case record != nil:
-		return nil, ErrMobileAlreadyExists
+		return nil, errors.WithStack(ErrMobileAlreadyExists)
 	}
 
 	// 定义用户数据
@@ -58,7 +58,7 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	if len(in.Password) > 0 {
 		hashedPasword, err := util.HashPassword(in.Password)
 		if err != nil {
-			return nil, err 
+			return nil, errors.Wrap(xerr.NewErrCode(xerr.SERVER_COMMON_ERROR), "hash password, err #{err}")
 		}
 
 		newUser.Password = sql.NullString{
@@ -70,9 +70,11 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	// 新增用户
 	_, err = l.svcCtx.UserModel.Insert(l.ctx, newUser)
 	if err != nil {
-		return nil, err 
+		return nil, errors.Wrap(xerr.NewErrCode(xerr.DB_ERROR), "insert user, err #{err}, param #{newUser}")
 	}
 	
+	l.Logger.Infow("[🚀注册]", logx.Field("用户数据", newUser.Id))
+
 	return &pb.RegisterResp{
 		Id: newUser.Id,
 	}, nil

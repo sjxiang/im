@@ -38,7 +38,7 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginResp, error) {
 	case err == model.ErrNotFound:
 		return nil, errors.WithStack(ErrMobileNotFound)
 	case err != nil:
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile err #{err}, req #{in.Mobile}")
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile, err #{err}, req #{in.Mobile}")
 	}
 
 	// 密码验证

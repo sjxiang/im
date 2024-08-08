@@ -1,0 +1,78 @@
+syntax = "v1"
+
+info (
+	title:  "用户服务"
+	author: "sjxiang"
+)
+
+type User {
+	Id       int64  `json:"id"`
+	Mobile   string `json:"mobile"`
+	Nickname string `json:"nickname"`
+	Sex      int64  `json:"sex"`
+	Avatar   string `json:"avatar"`
+	Info     string `json:"info"`
+}
+
+type (
+	RegisterReq {
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+		Nickname string `json:"nickname"`
+		Sex      int64  `json:"sex"`
+		Avatar   string `json:"avatar"`
+	}
+	RegisterResp {
+		UserId string `json:"user_id"`
+	}
+)
+
+type (
+	LoginReq {
+		Mobile   string `json:"mobile"`
+		Password string `json:"password"`
+	}
+	LoginResp {
+		AccessToken  string `json:"access_token"`
+		AccessExpire int64  `json:"access_expire"`
+	}
+)
+
+type (
+	UserInfoReq  {}
+	UserInfoResp {
+		UserInfo User `json:"user_info"`
+	}
+)
+
+@server (
+	prefix: /v1/user
+)
+service bff-api {
+	@doc (
+		summary: "用户注册"
+	)
+	@handler register
+	post /register (RegisterReq) returns (RegisterResp)
+
+	@doc (
+		summary: "用户登录"
+	)
+	@handler login
+	post /login (LoginReq) returns (LoginResp)
+}
+
+@server (
+	prefix:    /v1/user
+	signature: true
+	jwt:       JwtAuth // 开启 jwt 认证
+)
+service bff-api {
+	@doc (
+		summary: "获取用户信息"
+	)
+	@handler detail
+	get /detail returns (UserInfoResp)
+}
+
+// goctl api go -api *.api -dir ../  --style=go_zero

@@ -6,7 +6,9 @@ import (
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
+	"im/pkg/xerr"
 
+	"github.com/pkg/errors"
 	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -44,11 +46,13 @@ func (l *FindUserLogic) FindUser(in *pb.FindUserReq) (*pb.FindUserResp, error) {
 	}
 
 	if err != nil {
-		return nil, err 
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile or id, err #{err}")
 	}
 
 	var resp []*pb.User
 	copier.Copy(&resp, &items)
+	
+	l.Logger.Infow("[🚀查找用户]", logx.Field("用户数据", &resp))
 
 	return &pb.FindUserResp{
 		Users: resp,

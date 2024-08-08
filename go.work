@@ -6,6 +6,7 @@ go 1.21.4
 use (
     // 填充 mod path
     ../im/app/user/rpc
+    ../im/app/user/api
     ../im/app/user/model
     ../im/pkg
 )

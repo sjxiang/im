@@ -2,18 +2,19 @@ package logic
 
 import (
 	"context"
-	"errors"
 
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
 	"im/pkg/util"
+	"im/pkg/xerr"
 
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrMobileNotFound   = errors.New("mobile not found")    // 该手机号码未注册
-var ErrPasswordNotMatch = errors.New("password not match")  // 输入密码不匹配 
+var ErrMobileNotFound   = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "该手机号码未注册")
+var ErrPasswordNotMatch = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "输入密码不匹配")
 
 type LoginLogic struct {
 	ctx    context.Context
@@ -34,15 +35,15 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginResp, error) {
 	// 验证用户是否注册，根据手机号码验证
 	user, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile) 
 	switch {
-	case errors.Is(err, model.ErrNotFound):
-		return nil, ErrMobileNotFound
+	case err == model.ErrNotFound:
+		return nil, errors.WithStack(ErrMobileNotFound)
 	case err != nil:
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile err #{err}, req #{in.Mobile}")
 	}
 
 	// 密码验证
 	if valid, err := util.CheckPassword(user.Password.String, in.Password); err != nil && !valid {
-		return nil, ErrPasswordNotMatch
+		return nil, errors.WithStack(ErrPasswordNotMatch)
 	}
 
 	// 生成 token
@@ -53,7 +54,7 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginResp, error) {
 	}
 	token, err := util.GenerateAuth2Token(options)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.TOKEN_GENERATE_ERROR), "generate token err %v", err)
 	}
 
 	return &pb.LoginResp{

@@ -36,7 +36,12 @@ func (l *FindUserLogic) FindUser(in *pb.FindUserReq) (*pb.FindUserResp, error) {
 		items, err = l.svcCtx.UserModel.ListByNickname(l.ctx, in.Nickname)
 	} else if len(in.Ids) > 0 {
 		items, err = l.svcCtx.UserModel.ListByIds(l.ctx, in.Ids)
-	} 
+	} else if in.Mobile != "" {
+		item, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
+		if err == nil {
+			items = append(items, item)
+		}
+	}
 
 	if err != nil {
 		return nil, err 

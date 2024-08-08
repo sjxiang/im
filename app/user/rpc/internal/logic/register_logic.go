@@ -4,17 +4,21 @@ import (
 	"context"
 	"database/sql"
 	"errors"
-
+	
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
 	"im/pkg/util"
+	"im/pkg/xerr"
 
 	"github.com/google/uuid"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrMobileAlreadyExists = errors.New("mobile already exist")  // 改手机号码已经注册
+var (
+	ErrMobileAlreadyExists = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "手机号码已经注册")
+)
+
 
 type RegisterLogic struct {
 	ctx    context.Context
@@ -69,7 +73,6 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 		return nil, err 
 	}
 	
-
 	return &pb.RegisterResp{
 		Id: newUser.Id,
 	}, nil

@@ -26,32 +26,27 @@ func NewFindUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *FindUser
 }
 
 func (l *FindUserLogic) FindUser(in *pb.FindUserReq) (*pb.FindUserResp, error) {
-	// 用户搜索，叠加
+	
+	// 用户搜索（用户名、wxid、手机号），结果可以为空
 
-	var userList []*model.Users
+	var items []*model.User
 	var err error
 
-	switch {
-	case in.Mobile != "":
-		user, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
-		if err == nil {
-			userList = append(userList, user)
-		}
-	case in.Nickname != "":
-		userList, err = l.svcCtx.UserModel.ListByNickname(l.ctx, in.Nickname)
-	case len(in.Ids) > 0:
-		userList, err = l.svcCtx.UserModel.ListByIds(l.ctx, in.Ids)
-	}
+	if in.Nickname != "" {
+		items, err = l.svcCtx.UserModel.ListByNickname(l.ctx, in.Nickname)
+	} else if len(in.Ids) > 0 {
+		items, err = l.svcCtx.UserModel.ListByIds(l.ctx, in.Ids)
+	} 
 
 	if err != nil {
 		return nil, err 
 	}
 
-
 	var resp []*pb.User
-	copier.Copy(&resp, &userList)
+	copier.Copy(&resp, &items)
 
 	return &pb.FindUserResp{
-		User: resp,
+		Users: resp,
 	}, nil
 }
+

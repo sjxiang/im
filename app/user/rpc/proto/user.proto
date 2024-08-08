@@ -6,7 +6,7 @@ option go_package = "./pb";
 
 // entity
 message User {
-    int64 id = 1;         // 用户id
+    string id = 1;        // 用户id
     string mobile = 2;    // 手机号码
     string nickname = 3;  // 用户昵称
     string avatar = 4;    // 用户头像
@@ -33,7 +33,7 @@ message RegisterReq {
     int64 sex = 5;
 }
 message RegisterResp {
-    int64 id = 1;
+    string id = 1;
 }
 
 message LoginReq {
@@ -46,7 +46,7 @@ message LoginResp {
 }
 
 message GetUserInfoReq {
-    int64 id = 1;
+    string id = 1;
 }
 message GetUserInfoResp {
     User user = 1;
@@ -58,7 +58,7 @@ message FindUserReq {
     repeated string ids = 3;
 }
 message FindUserResp {
-    repeated User user = 1;
+    repeated User users = 1;
 }
 
 

@@ -39,10 +39,10 @@ func (l *GetUserInfoLogic) GetUserInfo(in *pb.GetUserInfoReq) (*pb.GetUserInfoRe
 		return nil, err 
 	}
 
-	var resp pb.GetUserInfoResp
+	var resp pb.User
 	copier.Copy(&resp, user)  // 第一个参数是要设置的对象，第二个参数是数据的来源
 
 	return &pb.GetUserInfoResp{
-		User: resp.User,
+		User: &resp,
 	}, nil
 }

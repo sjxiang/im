@@ -33,17 +33,17 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 	
 	// 验证用户是否注册，根据手机号码验证
-	user, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile) 
+	record, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile) 
 	switch {
 	case err != nil && !errors.Is(err, model.ErrNotFound):
 		return nil, err 
-	case user != nil:
+	case record != nil:
 		return nil, ErrMobileAlreadyExists
 	}
 
 	// 定义用户数据
-	user = &model.Users{
-		Id:       int64(uuid.New().ID()),
+	newUser := &model.User{
+		Id:       uuid.New().String(),
 		Avatar:   in.Avatar,
 		Nickname: in.Nickname,
 		Mobile:   in.Mobile,
@@ -57,18 +57,20 @@ func (l *RegisterLogic) Register(in *pb.RegisterReq) (*pb.RegisterResp, error) {
 			return nil, err 
 		}
 
-		user.Password = sql.NullString{
+		newUser.Password = sql.NullString{
 			String: hashedPasword,
 			Valid:  true,
 		}
 	}
 
 	// 新增用户
-	if _, err := l.svcCtx.UserModel.Insert(l.ctx, user); err != nil {
+	_, err = l.svcCtx.UserModel.Insert(l.ctx, newUser)
+	if err != nil {
 		return nil, err 
 	}
+	
 
 	return &pb.RegisterResp{
-		Id: user.Id,
+		Id: newUser.Id,
 	}, nil
 }

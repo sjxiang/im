@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 
 	"im/app/user/api/internal/svc"
 	"im/app/user/api/internal/types"
@@ -30,8 +31,10 @@ func NewDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetailLogi
 func (l *DetailLogic) Detail() (resp *types.UserInfoResp, err error) {
 	
 	uid := util.GetUidFromCtx(l.ctx)
-
-	l.Infow(uid)
+	if uid == "" {
+		return nil, errors.New("uid is empty")
+	}
+	l.Logger.Info("用户id", uid)
 
 	getUserInfoResp, err := l.svcCtx.UserRPC.GetUserInfo(l.ctx, &pb.GetUserInfoReq{
 		Id: uid,
@@ -40,10 +43,10 @@ func (l *DetailLogic) Detail() (resp *types.UserInfoResp, err error) {
 		return nil, err 
 	}
 
-	var reply types.UserInfoResp
-	copier.Copy(&reply, getUserInfoResp)
+	var reply types.User
+	copier.Copy(&reply, getUserInfoResp.User)
 
 	return &types.UserInfoResp{
-		UserInfo: reply.UserInfo,
+		UserInfo: reply,
 	}, nil
 }

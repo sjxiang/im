@@ -7,7 +7,6 @@ import (
 	"im/app/user/api/internal/types"
 	"im/app/user/rpc/pb"
 
-	"github.com/jinzhu/copier"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -39,10 +38,7 @@ func (l *RegisterLogic) Register(req *types.RegisterReq) (resp *types.RegisterRe
 		return nil, err 
 	}
 
-	var reply types.RegisterResp
-	copier.Copy(&reply, registerResp)
-
 	return &types.RegisterResp{
-		UserId: reply.UserId,
+		UserId: registerResp.Id,
 	}, nil
 }

@@ -9,10 +9,12 @@
 用户详情
 用户搜索
 
+```bash
+
 curl --location --request POST 'localhost:8888/v1/user/register' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "mobile":   "12345678910",
+    "mobile":   "12345678912",
     "nickname": "sjxiang",
     "password": "123456qwe",
     "sex":      1,
@@ -23,11 +25,12 @@ curl --location --request POST 'localhost:8888/v1/user/register' \
 curl --location --request POST 'localhost:8888/v1/user/login' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "mobile": "12344449999",
+    "mobile": "18851762282",
     "password": "123456"
 }'
 
 
-
 curl --location --request GET 'localhost:8888/v1/user/detail' \
---header 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzE3ODQ5OTQsImlhdCI6MTcyMzE0NDk5NCwiaWRlbnRpdHkiOiI2YzczNDFlMS1lMTRlLTRjYWYtODlmNC1hMWNhNGEyZjlkZGMifQ.bN4EKRXroodqWhSzhcsHaVr1K11xWogTWTbS7VEbQEk'
+--header 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzE4MzAzOTAsImlhdCI6MTcyMzE5MDM5MCwiaWRlbnRpdHkiOiJiYzUxZmY3My1kZmMwLTQ0Y2QtODM5OC01NDgzYmU1YjAyZjUifQ.PjLMi8xLej7E49URX8FHIdq3J7Y56xjP1YIi_zQpt04'
+
+```

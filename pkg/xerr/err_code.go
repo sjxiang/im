@@ -30,7 +30,3 @@ const (
 /*** 前3位代表业务，后3位代表具体功能 ***/
 
 // 用户模块
-
-// ErrTokenInvalid           = errors.New("token invalid")
-	// ErrTokenExpired           = errors.New("token expired")
-	

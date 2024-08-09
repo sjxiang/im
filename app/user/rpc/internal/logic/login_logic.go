@@ -13,7 +13,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrMobileNotFound   = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "该手机号码未注册")
+var ErrPhoneNotFound   = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "该手机号码未注册")
 var ErrPasswordNotMatch = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "输入密码不匹配")
 
 type LoginLogic struct {
@@ -33,10 +33,10 @@ func NewLoginLogic(ctx context.Context, svcCtx *svc.ServiceContext) *LoginLogic 
 func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginResp, error) {
 	
 	// 验证用户是否注册，根据手机号码验证
-	user, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile) 
+	user, err := l.svcCtx.UserModel.FindOneByPhone(l.ctx, in.Phone) 
 	switch {
 	case err == model.ErrNotFound:
-		return nil, errors.WithStack(ErrMobileNotFound)
+		return nil, errors.WithStack(ErrPhoneNotFound)
 	case err != nil:
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile, err #{err}, req #{in.Mobile}")
 	}

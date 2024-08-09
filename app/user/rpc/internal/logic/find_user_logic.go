@@ -38,15 +38,15 @@ func (l *FindUserLogic) FindUser(in *pb.FindUserReq) (*pb.FindUserResp, error) {
 		items, err = l.svcCtx.UserModel.ListByNickname(l.ctx, in.Nickname)
 	} else if len(in.Ids) > 0 {
 		items, err = l.svcCtx.UserModel.ListByIds(l.ctx, in.Ids)
-	} else if in.Mobile != "" {
-		item, err := l.svcCtx.UserModel.FindOneByMobile(l.ctx, in.Mobile)
+	} else if in.Phone != "" {
+		item, err := l.svcCtx.UserModel.FindOneByPhone(l.ctx, in.Phone)
 		if err == nil {
 			items = append(items, item)
 		}
 	}
 
 	if err != nil {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile or id, err #{err}")
+		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by phone or id, err #{err}")
 	}
 
 	var resp []*pb.User

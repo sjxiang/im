@@ -1,12 +1,13 @@
 package model
 
 import (
-	"context"
 	"fmt"
+	"context"
 	"strings"
-
+	
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
+
 var _ UserModel = (*customUserModel)(nil)
 
 type (
@@ -17,7 +18,7 @@ type (
 		withSession(session sqlx.Session) UserModel
 
 		ListByNickname(ctx context.Context, nickname string) ([]*User, error) 
-		ListByIds(ctx context.Context, ids []string) ([]*User, error)
+		ListByIds(ctx context.Context, ids []string) ([]*User, error) 
 	}
 
 	customUserModel struct {
@@ -35,7 +36,6 @@ func NewUserModel(conn sqlx.SqlConn) UserModel {
 func (m *customUserModel) withSession(session sqlx.Session) UserModel {
 	return NewUserModel(sqlx.NewSqlConnFromSession(session))
 }
-
 
 // like 模糊查询
 func (m *customUserModel) ListByNickname(ctx context.Context, nickname string) ([]*User, error) {

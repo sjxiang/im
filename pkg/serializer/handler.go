@@ -18,7 +18,7 @@ func OkHandler(_ context.Context, v interface{}) any {
 
 func ErrHandler(name string) func(ctx context.Context, err error) (int, any) {
 	return func(ctx context.Context, err error) (int, any) {
-		// 错误类型 3、未知错误
+	
 		errcode := xerr.SERVER_COMMON_ERROR
 		errmsg := "服务器开小差啦，稍后再来试一试"
 
@@ -30,14 +30,13 @@ func ErrHandler(name string) func(ctx context.Context, err error) (int, any) {
 			errmsg = e.GetErrMsg()
 		} else {
 			// 错误类型 2、上游 gRPC 服务传递的
-			if gstatus, ok := status.FromError(causeErr); ok { // grpc error 错误
+			if grpcStatus, ok := status.FromError(causeErr); ok { 
 				
-				grpcCode := uint32(gstatus.Code())
-				if xerr.IsCodeErr(grpcCode) { // 区分自定义错误跟系统底层、db等错误，底层、db错误不能返回给前端
-					errcode = grpcCode
-					errmsg = gstatus.Message()
-				}
+				errcode = uint32(grpcStatus.Code())
+				errmsg = grpcStatus.Message()
 			}
+			
+			// 错误类型 3、未知错误
 		}
 
 		// 日志记录

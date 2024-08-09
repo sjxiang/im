@@ -8,5 +8,10 @@ use (
     ../im/app/user/rpc
     ../im/app/user/api
     ../im/app/user/model
+    
+    ../im/app/social/cmd/rpc
+    ../im/app/social/cmd/api
+    ../im/app/social/model
+    
     ../im/pkg
 )

@@ -2,7 +2,7 @@
 package types
 
 type LoginReq struct {
-	Mobile   string `json:"mobile"`
+	Phone    string `json:"phone"`
 	Password string `json:"password"`
 }
 
@@ -12,7 +12,7 @@ type LoginResp struct {
 }
 
 type RegisterReq struct {
-	Mobile   string `json:"mobile"`
+	Phone    string `json:"phone"`
 	Password string `json:"password"`
 	Nickname string `json:"nickname"`
 	Sex      int64  `json:"sex"`
@@ -25,7 +25,7 @@ type RegisterResp struct {
 
 type User struct {
 	Id       int64  `json:"id"`
-	Mobile   string `json:"mobile"`
+	Phone    string `json:"phone"`
 	Nickname string `json:"nickname"`
 	Sex      int64  `json:"sex"`
 	Avatar   string `json:"avatar"`

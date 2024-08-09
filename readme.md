@@ -34,3 +34,5 @@ curl --location --request GET 'localhost:8888/v1/user/detail' \
 --header 'Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MzE4MzAzOTAsImlhdCI6MTcyMzE5MDM5MCwiaWRlbnRpdHkiOiJiYzUxZmY3My1kZmMwLTQ0Y2QtODM5OC01NDgzYmU1YjAyZjUifQ.PjLMi8xLej7E49URX8FHIdq3J7Y56xjP1YIi_zQpt04'
 
 ```
+
+

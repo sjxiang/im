@@ -1,0 +1,187 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "./pb";
+
+// entity
+message Friend {
+    int32 id = 1;        
+    string userId = 2;    // 用户id
+    string remark = 3;    // 验证
+    int32 addSource = 4;  // 添加来源
+    string friendUid = 5; // 好友用户id
+}
+
+message FriendApply {
+    int32 id = 1;
+    string userId = 2;
+    string applyId = 3;
+    string appplyMsg = 4;
+    int64 applyAt = 5;
+    int32 handleResult = 6; // 处理结果
+}
+
+message Group {
+    string id = 1;
+    string name = 2;
+    string icon = 3;
+    int32 status = 4;
+    string creatorUid = 5;    // 建群人
+    int32 groupType = 6;
+    bool isVerify = 7;
+    string notification = 8;  // 公告通知
+    string notificationUid = 9;
+}
+
+message GroupMember {
+    int32  id = 1;
+    string groupId = 2;
+    string userId = 3;
+    int32  roleLevel = 6;
+    int64  joinTime = 7;
+    int32  joinSource = 8;
+    string inviterUid = 9;
+    string operatorUid = 10;
+  }
+  
+  message GroupApply {
+    int32 id = 1;
+    string groupId = 2;
+    string applyId = 3;
+    string applyMsg = 4;
+    int64 applyTime = 5;
+    int32  joinSource = 6;
+    string inviterUid = 7;
+    string handleUid = 8;
+    int32  handleResult = 9; // 处理结果
+  }
+  
+
+// dto
+message FriendApplyReq {
+    string userId = 1;
+    string applyId = 2;
+    string applyMsg = 3;
+    int64 applyAt = 4;
+}
+message FriendApplyResp {}
+
+message FriendApplyHandleReq {
+    int32 friendApplyId = 1;
+    string userId = 2;
+    int32 handleResult = 3;
+}
+message FriendApplyHandleResp {}
+
+message FriendApplyListReq {
+    string userId = 1;
+}
+message FriendApplyListResp {
+    repeated FriendApply list = 1;
+}
+
+
+message ListFriendReq{
+    string userId = 1;
+}
+message ListFriendResp {
+    repeated Friend list = 1;
+}
+
+message GroupCreateReq {
+    string name = 2;
+    string icon = 3;
+    int32  status = 4;
+    string creator_uid = 5;
+}
+message GroupCreateResp {
+    string id = 1;
+}
+
+message GroupApplyReq {
+    string groupId = 2;
+    string applyId = 3;
+    string applyMsg = 4;
+    int64  applyAt = 5;
+    int32  joinSource = 6;
+    string inviterUid = 7;
+}
+message GroupApplyResp {
+    string groupId = 1;
+}
+
+
+message ListGroupApplyReq {
+    string groupId = 1;
+}
+message ListGroupApplyResp {
+    repeated GroupApply list = 1;
+}
+
+message GroupApplyHandleReq {
+    int32  groupApplyId = 1;
+    string groupId = 2;
+    string handleUid = 3;
+    int32  handleResult = 4; // 处理结果
+    string username = 5;
+    string userAvatarUrl = 6;
+}
+message GroupApplyHandleResp {
+    string groupId = 1;
+}
+
+message ListGroupReq {
+    string userId = 1;    
+}
+message ListGroupResp {
+    repeated Group list = 1;
+}
+
+message ListGroupMemberReq {
+    string groupId = 1;
+}
+message ListGroupMemberResp {
+    repeated GroupMember List = 1;
+}
+
+service Social {
+    
+    // 好友业务
+    
+    // 1、添加好友
+    rpc FriendApply (FriendApplyReq) returns (FriendApplyResp);
+
+    // 2、处理好友申请
+    rpc FriendApplyHandle (FriendApplyHandleReq) returns (FriendApplyHandleResp);
+
+    // 3、列出好友申请
+    rpc ListFriendApply (FriendApplyListReq) returns (FriendApplyListResp);
+
+    // 4、列出好友
+    rpc ListFriend (ListFriendReq) returns (ListFriendResp);
+
+    // 群业务
+    
+    // 1. 创建群组
+    rpc GroupCreate (GroupCreateReq) returns (GroupCreateResp);
+
+    // 2. 添加群众
+    rpc GroupApply (GroupApplyReq) returns (GroupApplyResp);
+
+    // 3、列出群组申请
+    rpc ListGroupApply (ListGroupApplyReq) returns (ListGroupApplyResp);
+    
+    // 4. 处理加群申请
+    rpc GroupApplyHandle (GroupApplyHandleReq) returns (GroupApplyHandleResp);
+
+    // 5. 列出群组
+    rpc ListGroup (ListGroupReq) returns (ListGroupResp);
+    
+    // 6. 列出群成员
+    rpc ListGroupMember (ListGroupMemberReq) returns (ListGroupMemberResp);
+}
+
+
+// goctl rpc protoc *.proto --go_out=../ --go-grpc_out=../ --zrpc_out=../ --style=go_zero
+

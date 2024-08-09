@@ -27,17 +27,16 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		pb.RegisterUserSrvServer(grpcServer, server.NewUserSrvServer(ctx))
+		pb.RegisterUserCenterServer(grpcServer, server.NewUserCenterServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}
 	})
+	defer s.Stop()
 
 	// diy gRPC server 拦截器
 	s.AddUnaryInterceptors(rpcserver.LoggerInterceptor)
-	
-	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()

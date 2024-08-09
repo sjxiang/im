@@ -12,22 +12,19 @@
 -- 删除表
 -- DROP TABLE IF EXISTS `users`;
 
-
-CREATE TABLE `user` (
-    `id`           varchar(64)   NOT NULL                           COMMENT 'id',
-    `nickname`     varchar(64)   NOT NULL DEFAULT ''                COMMENT '昵称',
-    `mobile`       varchar(64)   NOT NULL DEFAULT ''                COMMENT '手机号码',
-    `password`     varchar(64)            DEFAULT NULL              COMMENT '密码',
-    `sex`          tinyint       NOT NULL DEFAULT '1'               COMMENT '性别',
-    `status`       tinyint       NOT NULL DEFAULT '0'               COMMENT '是否锁住',
-    `intro`        varchar(1024) NOT NULL DEFAULT ''                COMMENT '自我介绍',
-    `avatar`       varchar(1024) NOT NULL DEFAULT ''                COMMENT '头像',
-    `created_at`   timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
-    `updated_at`   timestamp     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `idx_mobile` (`mobile`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户信息表';
-
+-- 脚本生成
 -- goctl model mysql ddl -src *.sql -dir . -cache=false --style=go_zero
 
-
+CREATE TABLE `user` (
+    `id` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'uuid',
+    `avatar` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'default.jpeg' COMMENT '头像',
+    `nickname` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '昵称',
+    `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '手机号码',
+    `password` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '密码',
+    `status` tinyint COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '是否锁住，0 active、1 forbidden',
+    `sex` tinyint COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '0' COMMENT '性别，0 man、1 woman',
+    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '添加时间',
+    `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_phone` (`phone`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户信息表';   

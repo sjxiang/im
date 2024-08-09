@@ -10,9 +10,8 @@ message User {
     string mobile = 2;    // 手机号码
     string nickname = 3;  // 用户昵称
     string avatar = 4;    // 用户头像
-    string intro = 5;     // 简介
-    int64  sex = 6;       // 用户性别
-    int64 status = 7;     // 是否锁住
+    int64  sex = 5;       // 用户性别
+    int64 status = 6;     // 是否锁住
 }
 
 
@@ -20,13 +19,12 @@ message User {
 message Request {
     string ping = 1;
 }
-
 message Response {
     string pong = 1;
 }
 
 message RegisterReq {
-    string mobile = 1;
+    string phone = 1;
     string nickname = 2;
     string password = 3;
     string avatar = 4;
@@ -37,7 +35,7 @@ message RegisterResp {
 }
 
 message LoginReq {
-    string mobile = 1;
+    string phone = 1;
     string password = 2;
 }
 message LoginResp {
@@ -54,7 +52,7 @@ message GetUserInfoResp {
 
 message FindUserReq {
     string nickname = 1;
-    string mobile = 2;
+    string phone = 2;
     repeated string ids = 3;
 }
 message FindUserResp {
@@ -62,7 +60,7 @@ message FindUserResp {
 }
 
 
-service UserSrv {
+service UserCenter {
     rpc Ping (Request) returns (Response);
     rpc Login (LoginReq) returns (LoginResp);
     rpc Register (RegisterReq) returns (RegisterResp);

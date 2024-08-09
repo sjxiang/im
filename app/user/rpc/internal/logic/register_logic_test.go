@@ -30,7 +30,7 @@ func Test_register_logic(t *testing.T) {
 			name: "注册成功",
 			args: &pb.RegisterReq{
 				Nickname: "admin",
-				Mobile:   "18851762282",
+				Phone:   "18851762282",
 				Password: "123456",
 				Avatar:   "admin.jpeg",
 				Sex:      1,

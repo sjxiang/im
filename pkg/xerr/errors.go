@@ -4,48 +4,40 @@ import (
 	"fmt"
 )
 
+
 /*
-	常用通用固定错误
+	通用错误 "github.com/zeromicro/x/errors"
  */
 
-type CodeError struct {
-	errCode uint32
-	errMsg  string
+type CodeMsg struct {
+	Code uint32  
+	Msg  string
+}
+
+func (c *CodeMsg) Error() string {
+	return fmt.Sprintf("code: %d, msg: %s", c.Code, c.Msg)
+}
+
+// 快速创建错误对象
+func NewCodeMsg(code uint32, msg string) error {
+	return &CodeMsg{Code: code, Msg: msg}
 }
 
 // 返回给前端的错误码
-func (e *CodeError) GetErrCode() uint32 {
-	return e.errCode
+func (e *CodeMsg) GetCode() uint32 {
+	return e.Code
 }
 
 // 返回给前端显示端错误信息
-func (e *CodeError) GetErrMsg() string {
-	return e.errMsg
+func (e *CodeMsg) GetMsg() string {
+	return e.Msg
 }
 
-func (e *CodeError) Error() string {
-	return fmt.Sprintf("ErrCode:%d, ErrMsg:%s", e.errCode, e.errMsg)
+func NewDBErr() error {
+	return &CodeMsg{Code: DB_ERROR, Msg: MapErrMsg(DB_ERROR)}
 }
 
-func NewErrCodeMsg(errCode uint32, errMsg string) *CodeError {
-	return &CodeError{
-		errCode: errCode, 
-		errMsg:  errMsg,
-	}
+func NewInternalServerErr() error {
+	return &CodeMsg{Code: SERVER_COMMON_ERROR, Msg: MapErrMsg(SERVER_COMMON_ERROR)}
 }
 
-// 快速创建错误对象，一
-func NewErrCode(errCode uint32) *CodeError {
-	return &CodeError{
-		errCode: errCode, 
-		errMsg:  MapErrMsg(errCode),
-	}
-}
-
-// 快速创建错误对象，二
-func NewErrMsg(errMsg string) *CodeError {
-	return &CodeError{
-		errCode: SERVER_COMMON_ERROR, 
-		errMsg:  errMsg,
-	}
-}

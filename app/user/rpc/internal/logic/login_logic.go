@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"fmt"
 
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
@@ -13,8 +14,9 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-var ErrPhoneNotFound   = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "该手机号码未注册")
-var ErrPasswordNotMatch = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "输入密码不匹配")
+var ErrPhoneNotFound    = xerr.NewCodeMsg(xerr.SERVER_COMMON_ERROR, "该手机号码未注册")
+var ErrPasswordNotMatch = xerr.NewCodeMsg(xerr.SERVER_COMMON_ERROR, "输入密码不匹配")
+var ErrTokenGenFailed   = xerr.NewCodeMsg(xerr.TOKEN_GENERATE_Failed_ERROR, "生成 token 失败")
 
 type LoginLogic struct {
 	ctx    context.Context
@@ -38,7 +40,7 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginResp, error) {
 	case err == model.ErrNotFound:
 		return nil, errors.WithStack(ErrPhoneNotFound)
 	case err != nil:
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by mobile, err #{err}, req #{in.Mobile}")
+		return nil, errors.Wrapf(xerr.NewDBErr(), fmt.Sprintf("find user by mobile, err %v, req %s", err, in.Phone))
 	}
 
 	// 密码验证
@@ -54,7 +56,7 @@ func (l *LoginLogic) Login(in *pb.LoginReq) (*pb.LoginResp, error) {
 	}
 	token, err := util.GenerateAuth2Token(options)
 	if err != nil {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.TOKEN_GENERATE_ERROR), "generate token err %v", err)
+		return nil, errors.Wrapf(ErrTokenGenFailed, fmt.Sprintf("generate token failed, err %v", err))
 	}
 
 	return &pb.LoginResp{

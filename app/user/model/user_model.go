@@ -66,8 +66,31 @@ func (m *customUserModel) ListByIds(ctx context.Context, ids []string) ([]*User,
 	}
 }
 
+/*
 
-// select `id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` from `users` where `id` in ('602ebd7f-d8fb-4a3f-9f0b-73ec0656edd0','eb76279e-1adf-4bd6-9fa5-9033a1ebe982');
-// select `id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` from `users` where `id` = '602ebd7f-d8fb-4a3f-9f0b-73ec0656edd0' limit 1;
-// select `id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` from `users` where `nickname` like '%jisoo%';
-// select `id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` from `users` where `id` in ('602ebd7f-d8fb-4a3f-9f0b-73ec0656edd0', )
+select 
+	`id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` 
+from 
+	`users` 
+where 
+	`id` in ('602ebd7f-d8fb-4a3f-9f0b-73ec0656edd0','eb76279e-1adf-4bd6-9fa5-9033a1ebe982');
+
+	
+select 
+	`id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` 
+from 
+	`users` 
+where 
+	`id` = '602ebd7f-d8fb-4a3f-9f0b-73ec0656edd0' l
+imit 1;
+
+
+select 
+	`id`,`nickname`,`mobile`,`password`,`sex`,`status`,`intro`,`avatar`,`created_at`,`updated_at` 
+from 
+	`users` 
+where 
+	`nickname` like '%jisoo%';
+
+ */
+

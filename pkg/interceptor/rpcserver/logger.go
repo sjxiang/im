@@ -16,17 +16,15 @@ import (
 func LoggerInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
 
 	resp, err = handler(ctx, req)
-	if err != nil {
-		causeErr := errors.Cause(err)                 // 获取原始 error
-		if e, ok := causeErr.(*xerr.CodeError); ok {  // 类型断言，自定义错误类型
-			logx.WithContext(ctx).Errorf("【RPC-SRV-ERR】 %+v", err)
+	if err == nil {
+		return resp, nil
+	}
+	
+	logx.WithContext(ctx).Errorf("【RPC SRV ERR】 %v", err)
 
-			// 转成 gRPC error
-			err = status.Error(codes.Code(e.GetErrCode()), e.GetErrMsg())
-		} else {
-			logx.WithContext(ctx).Errorf("【RPC-SRV-ERR】 %+v", err)
-		}
-
+	causeErr := errors.Cause(err)
+	if e, ok := causeErr.(*xerr.CodeMsg); ok {
+		err = status.Error(codes.Code(e.GetCode()), e.GetMsg())  // 转成 gRPC error
 	}
 
 	return resp, err

@@ -6,11 +6,11 @@ option go_package = "./pb";
 
 // entity
 message User {
-    string id = 1;        // 用户id
-    string mobile = 2;    // 手机号码
-    string nickname = 3;  // 用户昵称
-    string avatar = 4;    // 用户头像
-    int64  sex = 5;       // 用户性别
+    string id = 1;       
+    string mobile = 2;    
+    string nickname = 3;  
+    string avatar = 4;    
+    int64  sex = 5;      
     int64 status = 6;     // 是否锁住
 }
 

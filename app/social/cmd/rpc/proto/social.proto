@@ -8,7 +8,7 @@ option go_package = "./pb";
 message Friend {
     int32 id = 1;        
     string userId = 2;    // 用户id
-    string remark = 3;    // 验证
+    string remark = 3;    // 备注、昵称
     int32 addSource = 4;  // 添加来源
     string friendUid = 5; // 好友用户id
 }
@@ -24,8 +24,8 @@ message FriendApply {
 
 message Group {
     string id = 1;
-    string name = 2;
-    string icon = 3;
+    string name = 2;  // 群名称
+    string icon = 3;  // 群图标
     int32 status = 4;
     string creatorUid = 5;    // 建群人
     int32 groupType = 6;
@@ -46,14 +46,14 @@ message GroupMember {
   }
   
   message GroupApply {
-    int32 id = 1;
-    string groupId = 2;
-    string applyId = 3;
-    string applyMsg = 4;
-    int64 applyTime = 5;
+    int32 id = 1;           
+    string groupId = 2;     // 群组 id
+    string applyId = 3;     // 申请 id
+    string applyMsg = 4;    // 申请理由
+    int64 applyTime = 5;    // 申请时间
     int32  joinSource = 6;
     string inviterUid = 7;
-    string handleUid = 8;
+    string handleUid = 8;   // 处理人
     int32  handleResult = 9; // 处理结果
   }
   
@@ -166,16 +166,16 @@ service Social {
     // 1. 创建群组
     rpc GroupCreate (GroupCreateReq) returns (GroupCreateResp);
 
-    // 2. 添加群众
+    // 2. 申请加入群组
     rpc GroupApply (GroupApplyReq) returns (GroupApplyResp);
 
-    // 3、列出群组申请
+    // 3、获取群申请列表
     rpc ListGroupApply (ListGroupApplyReq) returns (ListGroupApplyResp);
     
-    // 4. 处理加群申请
+    // 4. 处理群申请
     rpc GroupApplyHandle (GroupApplyHandleReq) returns (GroupApplyHandleResp);
 
-    // 5. 列出群组
+    // 5. 列出我的群组
     rpc ListGroup (ListGroupReq) returns (ListGroupResp);
     
     // 6. 列出群成员

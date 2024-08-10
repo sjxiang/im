@@ -2,19 +2,20 @@ package logic
 
 import (
 	"context"
+	"fmt"
 
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
 	"im/pkg/xerr"
 
-	"github.com/pkg/errors"
 	"github.com/jinzhu/copier"
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
 
-var ErrUserNotFound = xerr.NewErrCodeMsg(xerr.SERVER_COMMON_ERROR, "不存在该用户")
+var ErrUserNotFound = xerr.NewCodeMsg(xerr.SERVER_COMMON_ERROR, "不存在该用户")
 
 type GetUserInfoLogic struct {
 	ctx    context.Context
@@ -37,7 +38,7 @@ func (l *GetUserInfoLogic) GetUserInfo(in *pb.GetUserInfoReq) (*pb.GetUserInfoRe
 	case err == model.ErrNotFound:
 		return nil, errors.WithStack(ErrUserNotFound)
 	case err != nil:
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by id, err #{err}, param #{in.Id}")
+		return nil, errors.Wrapf(xerr.NewDBErr(), fmt.Sprintf("find user by id, err %v, param %s", err, in.Id))
 	}
 
 	var resp pb.User

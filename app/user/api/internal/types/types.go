@@ -29,7 +29,6 @@ type User struct {
 	Nickname string `json:"nickname"`
 	Sex      int64  `json:"sex"`
 	Avatar   string `json:"avatar"`
-	Info     string `json:"info"`
 }
 
 type UserInfoReq struct {

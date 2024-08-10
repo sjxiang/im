@@ -16,7 +16,7 @@
 -- goctl model mysql ddl -src *.sql -dir . -cache=false --style=go_zero
 
 CREATE TABLE `user` (
-    `id` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'uuid',
+    `id` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'uuid',
     `avatar` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'default.jpeg' COMMENT '头像',
     `nickname` varchar(24) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '昵称',
     `phone` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '手机号码',

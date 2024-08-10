@@ -2,14 +2,15 @@ package logic
 
 import (
 	"context"
+	"fmt"
 
 	"im/app/user/model"
 	"im/app/user/rpc/internal/svc"
 	"im/app/user/rpc/pb"
 	"im/pkg/xerr"
 
-	"github.com/pkg/errors"
 	"github.com/jinzhu/copier"
+	"github.com/pkg/errors"
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
@@ -46,7 +47,7 @@ func (l *FindUserLogic) FindUser(in *pb.FindUserReq) (*pb.FindUserResp, error) {
 	}
 
 	if err != nil {
-		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "find user by phone or id, err #{err}")
+		return nil, errors.Wrapf(xerr.NewDBErr(), fmt.Sprintf("find user by phone or id, err %v", err))
 	}
 
 	var resp []*pb.User

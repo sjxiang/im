@@ -25,9 +25,9 @@ func ErrHandler(name string) func(ctx context.Context, err error) (int, any) {
 		causeErr := errors.Cause(err)                // 提取出原始 err
 
 		// 错误类型 1、当前 api 服务传递的
-		if e, ok := causeErr.(*xerr.CodeError); ok { 
-			errcode = e.GetErrCode()
-			errmsg = e.GetErrMsg()
+		if e, ok := causeErr.(*xerr.CodeMsg); ok { 
+			errcode = e.GetCode()
+			errmsg = e.GetMsg()
 		} else {
 			// 错误类型 2、上游 gRPC 服务传递的
 			if grpcStatus, ok := status.FromError(causeErr); ok { 
@@ -45,3 +45,4 @@ func ErrHandler(name string) func(ctx context.Context, err error) (int, any) {
 		return http.StatusBadRequest, FeedbackFail(errcode, errmsg)
 	}
 }
+
